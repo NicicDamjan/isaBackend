@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+/*@RestController
 @RequestMapping("api/user")
 public class HomeController {
 
@@ -20,4 +20,5 @@ public class HomeController {
         return userService.getOne(Long.parseLong(id));
     }
 
-}
+    */
+//}
