@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import ftn.isa.booking.model.User;
 import ftn.isa.booking.reporistory.UsersRepository;
 
+
 @Service
 public class UserService {
 
