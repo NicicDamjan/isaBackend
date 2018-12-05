@@ -3,6 +3,7 @@ package ftn.isa.booking.services;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
 import ftn.isa.booking.model.User;
@@ -13,6 +14,9 @@ public class UserService {
 
     @Autowired
     private UsersRepository usersRepository;
+    
+    @Autowired
+    private EmailService emailService;
 
     public User regisrateUser(User user) {
     	
@@ -20,6 +24,14 @@ public class UserService {
     	user.setActive(false);    
     	user.setConfirmationToken(UUID.randomUUID().toString());
     	user = usersRepository.save(user);
+    	
+    	String appUrl = "http://localhost:4200/confirmEmail/";//request.getScheme() + "://" + request.getServerName();
+		SimpleMailMessage registrationEmail=new SimpleMailMessage();
+		registrationEmail.setTo(user.getEmail());
+		registrationEmail.setSubject("Registration Confirmation");
+		registrationEmail.setText("To confirm your e-mail address, please click the link below:\n"
+		+appUrl+ user.getConfirmationToken());
+		emailService.sendEmail(registrationEmail);
     	
     	return user;
     	
