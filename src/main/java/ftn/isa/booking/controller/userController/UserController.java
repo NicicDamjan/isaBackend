@@ -1,11 +1,13 @@
 package ftn.isa.booking.controller.userController;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ftn.isa.booking.controller.dto.MessageResponseDTO;
@@ -15,6 +17,7 @@ import ftn.isa.booking.services.UserService;
 
 @RestController
 @RequestMapping("/user")
+@CrossOrigin(origins="http://localhost:4200",allowedHeaders="*")
 public class UserController {
 
 
@@ -54,7 +57,41 @@ public class UserController {
 	    	
 	    	return new MessageResponseDTO("User is registrated");
 	    }
+	    
+	    @PostMapping("/confirmEmail")
+	    public MessageResponseDTO confirmEmail(@RequestParam("token") String token) {
+	    	System.out.println("Usaoo");
+	    	User user = userService.findByConfirmationToken(token);
+			
+			if(user==null) {
+				return new MessageResponseDTO("Oops! This token is invalid!");
+			}
+			user.setActive(true);
+			userService.saveUser(user);
+		return new MessageResponseDTO("User is activated");
+	    }
+	    
+	    @PostMapping("/edituser")
+	    public MessageResponseDTO editUser(@RequestBody RegistrationDTO registrationDTO) {
+	        
+	        User user = new User();
+	        user = userService.getOneByEmail(registrationDTO.getEmail());
+	        user.setName(registrationDTO.getName());
+	        user.setSurname(registrationDTO.getSurname());
+	        user.setCity(registrationDTO.getCity());
+	        user.setPhonenumber(registrationDTO.getPhonenumber());
+	       
+	        if(!(registrationDTO.getPassword1().equals(registrationDTO.getPassword2()))) {
+		    	   return new MessageResponseDTO("Password1 and password2 is not equal!");
+		    	}
+	        
+	        user.setPassword(registrationDTO.getPassword1());
+	        
+	        userService.saveUser(user);
+	        
+	    	   return new MessageResponseDTO("Uspesno editovanje");
+	    }
 
 	    
-	}
+}
 

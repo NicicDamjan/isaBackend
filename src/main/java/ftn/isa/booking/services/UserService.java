@@ -26,7 +26,7 @@ public class UserService {
     	user.setConfirmationToken(UUID.randomUUID().toString());
     	user = usersRepository.save(user);
     	
-    	String appUrl = "http://localhost:4200/confirmEmail/";//request.getScheme() + "://" + request.getServerName();
+    	String appUrl = "http://localhost:4200/auth/confirmEmail/";//request.getScheme() + "://" + request.getServerName();
 		SimpleMailMessage registrationEmail=new SimpleMailMessage();
 		registrationEmail.setTo(user.getEmail());
 		registrationEmail.setSubject("Registration Confirmation");
@@ -38,10 +38,22 @@ public class UserService {
     	
     	
     }
-   
+ 
  
     public User getOne(Long id) {
         return usersRepository.findOneById(id);
+    }
+    
+    public User getOneByEmail(String email) {
+    	return usersRepository.findOneByEmail(email);
+    }
+    
+    public User findByConfirmationToken(String token) {
+        return usersRepository.findOneByConfirmationToken(token);
+    }
+    
+    public void saveUser(User user) {
+    	usersRepository.save(user);
     }
     
     public boolean checkUniqueEmail(String email) {
