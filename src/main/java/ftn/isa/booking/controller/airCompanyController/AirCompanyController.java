@@ -1,7 +1,7 @@
 package ftn.isa.booking.controller.airCompanyController;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,4 +41,28 @@ public class AirCompanyController {
 	    	
 			return new MessageResponseDTO("Success registrated AC");	
 	 }
+	 
+	 
+	 @PostMapping("/editAC")
+	    public MessageResponseDTO editAC(@RequestBody RegistrationACDTO registrationACDTO) {
+	    	
+	    	AirCompany airCompany = new AirCompany();
+	    	
+	    	airCompany.setName(registrationACDTO.getName());
+	    	airCompany.setDescription(registrationACDTO.getDescription());
+	    	airCompany.setAdress(registrationACDTO.getAdress());
+	    	
+	    	airCompanyService.saveAirCompany(airCompany);
+	    	
+			return new MessageResponseDTO("Success edited AC");	
+	 }
+	 
+	 @DeleteMapping("/deleteAC/{id}")
+	    public MessageResponseDTO deleteAirCompany(@PathVariable String id) {
+		 
+		 airCompanyService.deleteById(Long.parseLong(id));
+		 
+		 return new MessageResponseDTO("Success deleted AC");	
+	 }
+		 
 }

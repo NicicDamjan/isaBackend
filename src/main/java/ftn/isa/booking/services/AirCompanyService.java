@@ -19,5 +19,11 @@ public class AirCompanyService {
 	 public AirCompany getOne(Long id) {
 	        return airCompanyRepository.findOneById(id);
 	    }
+	 
+	 public void deleteById(Long id) {
+	    	airCompanyRepository.deleteById(id);
+	    }
+	 
+	 
 	    
 }
