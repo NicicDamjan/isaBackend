@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Implementation-Title: booking
 Implementation-Version: 0.0.1-SNAPSHOT
-Built-By: Korisnik
+Built-By: Damjan
 Implementation-Vendor-Id: ftn.isa
-Build-Jdk: 1.8.0_131
+Build-Jdk: 1.8.0_192
 Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
  ot-starter-parent/booking
 Created-By: Maven Integration for Eclipse
