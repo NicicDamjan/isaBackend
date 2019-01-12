@@ -18,8 +18,10 @@ import ftn.isa.booking.controller.dto.MessageResponseDTO;
 import ftn.isa.booking.controller.hotelController.dto.RegistrationHDTO;
 import ftn.isa.booking.controller.hotelController.dto.ServiceDTO;
 import ftn.isa.booking.model.Hotel;
+import ftn.isa.booking.model.User;
 import ftn.isa.booking.response.HotelResponse;
 import ftn.isa.booking.services.HotelService;
+import ftn.isa.booking.services.UserService;
 
 @RestController
 @RequestMapping("/hotel")
@@ -28,6 +30,9 @@ public class HotelController {
 	
 	 @Autowired
 	 private HotelService hotelService;
+	 
+	 @Autowired
+	 private UserService userService;
 	 
 	 @GetMapping("/{id}")
 	 public Hotel getHotel(@PathVariable String id) {
@@ -56,7 +61,7 @@ public class HotelController {
      hotel.setName(registrationHDTO.getName());
      hotel.setAddress(registrationHDTO.getAddress());
      hotel.setDescription(registrationHDTO.getDescription());
-     
+     hotel.setAdmin(registrationHDTO.getAdmin());
      hotelService.saveHotel(hotel);
 	
 	 return new MessageResponseDTO("Hotel is registrated");

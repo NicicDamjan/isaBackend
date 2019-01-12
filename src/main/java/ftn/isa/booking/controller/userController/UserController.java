@@ -1,5 +1,7 @@
 package ftn.isa.booking.controller.userController;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,9 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import ftn.isa.booking.controller.dto.MessageResponseDTO;
 import ftn.isa.booking.controller.userController.dto.RegistrationDTO;
 import ftn.isa.booking.model.User;
+import ftn.isa.booking.response.UserResponse;
 import ftn.isa.booking.services.UserService;
 
 @RestController
@@ -129,6 +134,13 @@ public class UserController {
 	        
 	    	   return new MessageResponseDTO("Uspesno editovanje");
 	    }
+	    
+	    @JsonValue
+		@GetMapping("/getUsers")
+		public UserResponse getUsers(){
+			List<User>listUsers=userService.findAllUsers();
+			return new UserResponse(listUsers);	
+		}
 
 }
 

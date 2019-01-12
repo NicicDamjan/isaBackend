@@ -1,5 +1,6 @@
 package ftn.isa.booking.services;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,6 +68,9 @@ public class UserService {
     	return true;
     }
     
+    public List<User> findAllUsers() {
+		return usersRepository.findAll();
+	}
     
 
 }
