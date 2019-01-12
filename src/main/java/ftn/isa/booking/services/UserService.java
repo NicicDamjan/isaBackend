@@ -16,9 +16,12 @@ public class UserService {
     @Autowired
     private UsersRepository usersRepository;
     
+    public static User activeUser;
+    
     @Autowired
     private EmailService emailService;
 
+    
     public User regisrateUser(User user) {
     	
     	user.setRole("USER");
@@ -26,7 +29,7 @@ public class UserService {
     	user.setConfirmationToken(UUID.randomUUID().toString());
     	user = usersRepository.save(user);
     	
-    	String appUrl = "http://localhost:4200/auth/confirmEmail/";//request.getScheme() + "://" + request.getServerName();
+    	String appUrl = "http://localhost:4200/confirmEmail/";//request.getScheme() + "://" + request.getServerName();
 		SimpleMailMessage registrationEmail=new SimpleMailMessage();
 		registrationEmail.setTo(user.getEmail());
 		registrationEmail.setSubject("Registration Confirmation");

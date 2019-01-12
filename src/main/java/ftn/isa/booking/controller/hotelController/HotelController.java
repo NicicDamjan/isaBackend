@@ -1,5 +1,7 @@
 package ftn.isa.booking.controller.hotelController;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -10,13 +12,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import ftn.isa.booking.controller.dto.MessageResponseDTO;
-import ftn.isa.booking.controller.hotelController.dto.RegistrationDTO;
+import ftn.isa.booking.controller.hotelController.dto.RegistrationHDTO;
+import ftn.isa.booking.controller.hotelController.dto.ServiceDTO;
 import ftn.isa.booking.model.Hotel;
+import ftn.isa.booking.response.HotelResponse;
 import ftn.isa.booking.services.HotelService;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/hotel")
 @CrossOrigin(origins="http://localhost:4200",allowedHeaders="*")
 public class HotelController {
 	
@@ -28,15 +34,28 @@ public class HotelController {
         return hotelService.getOne(Long.parseLong(id));
      }
 	 
+	 @JsonValue
+	 @GetMapping("/getHotels")
+	 public HotelResponse getHotels(){
+			
+			List<Hotel>listht=hotelService.getAllHotels();
+			
+			
+			return new HotelResponse(listht);
+			
+		}
 	 
-	 @PostMapping("/registration")
-	 public MessageResponseDTO registration(@RequestBody RegistrationDTO registrationDTO) {
+	 
+	 
+	 
+	 @PostMapping("/registrationHotel")
+	 public MessageResponseDTO registration(@RequestBody RegistrationHDTO registrationHDTO) {
 
      Hotel hotel = new Hotel();
      
-     hotel.setName(registrationDTO.getName());
-     hotel.setAddress(registrationDTO.getAddress());
-     hotel.setDescription(registrationDTO.getDescription());
+     hotel.setName(registrationHDTO.getName());
+     hotel.setAddress(registrationHDTO.getAddress());
+     hotel.setDescription(registrationHDTO.getDescription());
      
      hotelService.saveHotel(hotel);
 	
@@ -44,17 +63,29 @@ public class HotelController {
 	 }
 	 
 	 @PostMapping("/editHotel")
-	 public MessageResponseDTO editHotel(@RequestBody RegistrationDTO registrationDTO) {
+	 public MessageResponseDTO editHotel(@RequestBody RegistrationHDTO registrationHDTO) {
 
      Hotel hotel = new Hotel();
      
-     hotel.setName(registrationDTO.getName());
-     hotel.setAddress(registrationDTO.getAddress());
-     hotel.setDescription(registrationDTO.getDescription());
+     hotel.setName(registrationHDTO.getName());
+     hotel.setAddress(registrationHDTO.getAddress());
+     hotel.setDescription(registrationHDTO.getDescription());
      
      hotelService.saveHotel(hotel);
 	
 	 return new MessageResponseDTO("Hotel is edited");
+	 }
+	 
+	 @PostMapping("/addService/{id}")
+	 public MessageResponseDTO addService(@PathVariable String id,@RequestBody ServiceDTO serviceDTO) {
+
+     Hotel hotel = hotelService.getOne(Long.parseLong(id));
+     
+    // hotel.getServices().put(serviceDTO.getName(), serviceDTO.getPrice());
+
+     hotelService.saveHotel(hotel);
+	
+	 return new MessageResponseDTO("Servis is created");
 	 }
 	 
 	 @DeleteMapping("/deleteHotel/{id}")

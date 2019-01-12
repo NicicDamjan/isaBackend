@@ -1,6 +1,6 @@
 package ftn.isa.booking.controller.hotelController.dto;
 
-public class RegistrationDTO {
+public class RegistrationHDTO {
 
 	 private String name;
 	    private String address;

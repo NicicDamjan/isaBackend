@@ -24,11 +24,49 @@ public class UserController {
 	    @Autowired
 	    private UserService userService;
 
-	    @GetMapping("/{id}")
+	    @GetMapping("/getUser/{id}")
 	    public User getUser(@PathVariable String id) {
 	        return userService.getOne(Long.parseLong(id));
 	    }
 	    
+
+	    @GetMapping("/deleteActiveUser")
+	    public  MessageResponseDTO deleteActiveUser(){
+	        System.out.println("usao");
+	        UserService.activeUser = null;
+	        return new MessageResponseDTO("There is no active users!");
+	    }
+		
+		
+		@PostMapping("/setActiveUser/{userId}")
+	    public  MessageResponseDTO setActiveUser(@PathVariable Long userId){
+	        User activeUser = userService.getOne(userId);
+	        UserService.activeUser = activeUser;
+	        return new MessageResponseDTO("User is now active!");
+	    }
+
+	    @GetMapping("/getActiveUser")
+	    public User getActiveUser(){
+	    	User activeUser = UserService.activeUser;
+	        return activeUser;
+	    }
+	    
+	    @PostMapping("/login")
+	    public User login(@RequestBody RegistrationDTO registrationDTO) {
+	    	
+	    	User user = new User();
+	    	user = userService.getOneByEmail(registrationDTO.getEmail());
+	    	if(user==null)
+	    		return null;
+	    	if(user.getPassword().equals(registrationDTO.getPassword1()))
+	    		{
+	    		UserService.activeUser=user;
+	    		return user;
+	    		}
+	    	else
+	    		return null;
+	      	
+	    }
 	    
 	    @PostMapping("/registration")
 	    public MessageResponseDTO registration(@RequestBody RegistrationDTO registrationDTO) {
@@ -92,6 +130,5 @@ public class UserController {
 	    	   return new MessageResponseDTO("Uspesno editovanje");
 	    }
 
-	    
 }
 
