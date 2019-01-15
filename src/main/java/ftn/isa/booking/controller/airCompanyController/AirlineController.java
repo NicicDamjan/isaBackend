@@ -12,50 +12,50 @@ import org.springframework.web.bind.annotation.RestController;
 import ftn.isa.booking.controller.airCompanyController.dto.RegistrationACDTO;
 import ftn.isa.booking.controller.airCompanyController.dtoFlight.RegistrationFLIGHTDTO;
 import ftn.isa.booking.controller.dto.MessageResponseDTO;
-import ftn.isa.booking.model.AirCompany;
+import ftn.isa.booking.model.Airline;
 import ftn.isa.booking.model.Flight;
-import ftn.isa.booking.services.AirCompanyService;
+import ftn.isa.booking.services.AirlineService;
 import ftn.isa.booking.services.FlightService;
 
 @RestController
-@RequestMapping("/airCompany")
+@RequestMapping("/airline")
 //@CrossOrigin(origins="http://localhost:4200",allowedHeaders="*")
-public class AirCompanyController {
+public class AirlineController {
 	
 	@Autowired
-    private AirCompanyService airCompanyService;
+    private AirlineService airlineService;
 	
 	 @GetMapping("/{id}")
-	    public AirCompany getAirCompany(@PathVariable String id) {
-	        return airCompanyService.getOne(Long.parseLong(id));
+	    public Airline getAirline(@PathVariable String id) {
+	        return airlineService.getOne(Long.parseLong(id));
 	    }
 	 
 	 
 	 @PostMapping("/registration")
 	    public MessageResponseDTO registration(@RequestBody RegistrationACDTO registrationACDTO) {
 	    	
-	    	AirCompany airCompany = new AirCompany();
+		 	Airline airline = new Airline();
 	    	
-	    	airCompany.setName(registrationACDTO.getName());
-	    	airCompany.setDescription(registrationACDTO.getDescription());
-	    	airCompany.setAdress(registrationACDTO.getAdress());
+		 	airline.setName(registrationACDTO.getName());
+		 	airline.setDescription(registrationACDTO.getDescription());
+		 	airline.setAdress(registrationACDTO.getAdress());
 	    	
-	    	airCompanyService.saveAirCompany(airCompany);
+	    	airlineService.saveAirline(airline);
 	    	
 			return new MessageResponseDTO("Success registrated AC");	
 	 }
 	 
 	 
-	 @PostMapping("/editAC")
+	 @PostMapping("/editAirline")
 	    public MessageResponseDTO editAC(@RequestBody RegistrationACDTO registrationACDTO) {
 	    	
-	    	AirCompany airCompany = new AirCompany();
+		 	Airline airline = new Airline();
 	    	
-	    	airCompany.setName(registrationACDTO.getName());
-	    	airCompany.setDescription(registrationACDTO.getDescription());
-	    	airCompany.setAdress(registrationACDTO.getAdress());
+		 	airline.setName(registrationACDTO.getName());
+		 	airline.setDescription(registrationACDTO.getDescription());
+		 	airline.setAdress(registrationACDTO.getAdress());
 	    	
-	    	airCompanyService.saveAirCompany(airCompany);
+	    	airlineService.saveAirline(airline);
 	    	
 			return new MessageResponseDTO("Success edited AC");	
 	 }
@@ -63,7 +63,7 @@ public class AirCompanyController {
 	 @DeleteMapping("/deleteAC/{id}")
 	    public MessageResponseDTO deleteAirCompany(@PathVariable String id) {
 		 
-		 airCompanyService.deleteById(Long.parseLong(id));
+		 airlineService.deleteById(Long.parseLong(id));
 		 
 		 return new MessageResponseDTO("Success deleted AC");	
 	 }

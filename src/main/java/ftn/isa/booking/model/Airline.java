@@ -10,9 +10,9 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "aircompany")
+@Table(name = "Airlines")
 
-public class AirCompany {
+public class Airline {
 
 	    @Id
 	    @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +26,7 @@ public class AirCompany {
 	    
 	    
 	      
-		public AirCompany() {
+		public Airline() {
 			super();
 		}
 		public Long getId() {
