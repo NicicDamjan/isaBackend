@@ -60,7 +60,7 @@ public class HotelController {
      
      hotel.setName(registrationHDTO.getName());
      hotel.setAddress(registrationHDTO.getAddress());
-     hotel.setDescription(registrationHDTO.getDescription());
+     hotel.setDesc(registrationHDTO.getDescription());
      hotel.setAdmin(registrationHDTO.getAdmin());
      hotelService.saveHotel(hotel);
 	
@@ -74,7 +74,7 @@ public class HotelController {
      
      hotel.setName(registrationHDTO.getName());
      hotel.setAddress(registrationHDTO.getAddress());
-     hotel.setDescription(registrationHDTO.getDescription());
+     hotel.setDesc(registrationHDTO.getDescription());
      
      hotelService.saveHotel(hotel);
 	
