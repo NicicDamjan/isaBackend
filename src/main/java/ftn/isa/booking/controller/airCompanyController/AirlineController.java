@@ -1,6 +1,7 @@
 package ftn.isa.booking.controller.airCompanyController;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import ftn.isa.booking.controller.airCompanyController.dto.AirlineConfigurationDTO;
+import ftn.isa.booking.controller.airCompanyController.dto.AirlineDTO;
 import ftn.isa.booking.controller.airCompanyController.dto.AirlineServicesDTO;
 import ftn.isa.booking.controller.airCompanyController.dto.DestinationDTO;
 import ftn.isa.booking.controller.airCompanyController.dto.FlightDTO;
@@ -27,7 +29,6 @@ import ftn.isa.booking.services.AirlineService;
 import ftn.isa.booking.services.DestinationService;
 import ftn.isa.booking.services.FlightService;
 import ftn.isa.booking.services.SeatService;
-
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
@@ -107,6 +108,22 @@ public class AirlineController {
 		airlineService.save(airline);
 		return airline;	
 	}
+	
+	  @RequestMapping(value = "/add", method = RequestMethod.POST,
+	            consumes =MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	    @ApiOperation(value = "Create a airline resource.", httpMethod = "POST", produces = "application/json", consumes = "application/json")
+	    
+	            
+	           
+	    public void registerAirline(@ApiParam(value = "The airline object", required = true) @RequestBody AirlineDTO airline){
+	        Airline a = new Airline(airline.getName(), airline.getAddress(), airline.getDescription(), new HashSet<>(), new HashSet<>());
+	        airlineService.save(a);
+
+	    }
+	
+	
+	
+	
 	
 	@RequestMapping(value = "/removeFlight/{id}", method = RequestMethod.DELETE)
 	@ApiOperation(value = "Delete a flight.", notes = "You have to provide a valid flight ID in the URL", httpMethod = "DELETE")
