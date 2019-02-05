@@ -62,6 +62,8 @@ public class HotelController {
      hotel.setAddress(registrationHDTO.getAddress());
      hotel.setDesc(registrationHDTO.getDescription());
      hotel.setAdmin(registrationHDTO.getAdmin());
+     hotel.setCity(registrationHDTO.getCity());
+     hotel.setCountry(registrationHDTO.getCountry());
      hotelService.saveHotel(hotel);
 	
 	 return new MessageResponseDTO("Hotel is registrated");
