@@ -17,7 +17,9 @@ public class RoomDTO implements Serializable {
     private RoomType roomType;
     private LocalDate costValidFrom;
     private LocalDate costValidUntil;
-
+    private LocalDate reservedFrom = null;
+    private LocalDate reservedUntil = null;
+    
     public  RoomDTO(){}
 
     public RoomDTO(Long id, boolean reserved, float costPerNight, Long hotelId, int capacity, int floor, boolean hasBalcony,
@@ -124,4 +126,22 @@ public class RoomDTO implements Serializable {
     public void setCostValidUntil(LocalDate costValidUntil) {
         this.costValidUntil = costValidUntil;
     }
+
+	public LocalDate getReservedFrom() {
+		return reservedFrom;
+	}
+
+	public void setReservedFrom(LocalDate reservedFrom) {
+		this.reservedFrom = reservedFrom;
+	}
+
+	public LocalDate getReservedUntil() {
+		return reservedUntil;
+	}
+
+	public void setReservedUntil(LocalDate reservedUntil) {
+		this.reservedUntil = reservedUntil;
+	}
+    
+    
 }
