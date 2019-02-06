@@ -37,6 +37,11 @@ public class Room implements Serializable {
     @Column
     private int capacity;
 
+    @Column
+    private LocalDate reservedFrom;
+
+    @Column
+    private LocalDate reservedUntil;
 
     @Column
     private  int floor;
@@ -60,6 +65,9 @@ public class Room implements Serializable {
 
     @Column(name = "CenaVaziDo")
     private LocalDate costValidUntil;
+    
+    @Column(nullable = false)
+    private boolean active = true;
     /*
      * Za primer optimistickog zakljucavanja, Spring i EJB koriste posebnu anotaciju
      * @Version kojom se anotira obicno integer polje koje se pri svakoj promeni entiteta
@@ -202,5 +210,31 @@ public class Room implements Serializable {
     public void setCostValidUntil(LocalDate costValidUntil) {
         this.costValidUntil = costValidUntil;
     }
+
+	public LocalDate getReservedFrom() {
+		return reservedFrom;
+	}
+
+	public void setReservedFrom(LocalDate reservedFrom) {
+		this.reservedFrom = reservedFrom;
+	}
+
+	public LocalDate getReservedUntil() {
+		return reservedUntil;
+	}
+
+	public void setReservedUntil(LocalDate reservedUntil) {
+		this.reservedUntil = reservedUntil;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+    
+    
 
 }
