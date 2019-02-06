@@ -26,6 +26,8 @@ public class FlightReservation implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY, optional =true)
     private User user;
 	
+	@OneToMany(fetch = FetchType.LAZY)
+    private Set<SeatTicket> seatTickets = new HashSet<SeatTicket>();
 	
 	@OneToMany(fetch = FetchType.EAGER)
 	private Set<AirlineServices> services = new HashSet<AirlineServices>();
@@ -63,6 +65,13 @@ public class FlightReservation implements Serializable {
 	}
 
 
+	public Set<SeatTicket> getSeatTickets() {
+		return seatTickets;
+	}
+
+	public void setSeatTickets(Set<SeatTicket> seatTickets) {
+		this.seatTickets = seatTickets;
+	}
 
 	public double getPrice() {
 		return price;
