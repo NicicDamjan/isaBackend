@@ -1,30 +1,41 @@
 package ftn.isa.booking.controller.airCompanyController;
 
+
+import java.text.ParseException;
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import ftn.isa.booking.model.Flight;
+import ftn.isa.booking.model.FlightReservation;
 import ftn.isa.booking.model.Seat;
+import ftn.isa.booking.services.FlightReservationService;
 import ftn.isa.booking.services.FlightService;
 import ftn.isa.booking.services.SeatService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 @RestController
-@RequestMapping(value="/api/airlines/{id}/flights")
+@RequestMapping(value="/api")
 public class FlightController {
 
 	@Autowired
 	private FlightService flightService;
 	
 	@Autowired
+	private FlightReservationService flightReservationService;
+	
+	
+	@Autowired
 	private SeatService seatService;
 	
-	@RequestMapping(value = "/{id}/addSeat",	method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE,
+	@RequestMapping(value = "//airlines/{id}/flights/{id}/addSeat",	method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Create a seat.", notes = "Returns the seat being saved.", httpMethod = "POST", produces = "application/json", consumes = "application/json")
 	public Seat addSeat(@ApiParam(value = "The seat object", required = true)  @PathVariable Long id){
@@ -43,7 +54,7 @@ public class FlightController {
 	}
 	
 	
-	@RequestMapping(value = "/{id1}/removeSeat/{id2}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/airlines/{id}/flights/{id1}/removeSeat/{id2}", method = RequestMethod.DELETE)
 	@ApiOperation(value = "Delete a seat.", notes = "You have to provide a valid seat ID in the URL", httpMethod = "DELETE")
 	public Flight deleteSeat(@ApiParam(value = "The ID of the existing seat.", required = true) @PathVariable Long id1, @PathVariable Long id2) {
 		
@@ -63,7 +74,7 @@ public class FlightController {
 	
 
 	
-	@RequestMapping(value = "/{id}/getFlight", method = RequestMethod.GET)
+	@RequestMapping(value = "/airlines/{id}/flights/{id}/getFlight", method = RequestMethod.GET)
 	public Flight getFlight(@PathVariable Long id) {
 		
 		return flightService.findById(id);
@@ -71,6 +82,18 @@ public class FlightController {
 		
 	}
 	
+
 	
+	
+	
+	
+	@RequestMapping(value="/flight-reservations/{id}/cost", method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public double getFlightReservationCost(@PathVariable Long id){
+		FlightReservation fr = flightReservationService.findById(id);
+		return  fr.getPrice();
+	}
+
 	
 }
+
