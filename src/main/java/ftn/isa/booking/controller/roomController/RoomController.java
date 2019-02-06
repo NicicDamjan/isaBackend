@@ -28,15 +28,20 @@ public class RoomController {
         List<Room> rooms = roomService.findAllRooms();
         List<RoomDTO> ret = new ArrayList<>();
 
+        System.out.println("Usao u funkciju za dobijanje soba hotela sa idom "+ hotelId);
         for (Room r: rooms) {
-            if (r.getHotel().getId() == hotelId){
+
+            if ((long)r.getHotel().getId() == (long)hotelId && r.isActive() == true){
+                System.out.println(r.getHotel().getId());
                 RoomDTO roomDTO = new RoomDTO(r.getId(),r.isReserved(),r.getCostPerNight(),r.getHotel().getId(),
                         r.getCapacity(),r.getFloor(),r.isHasBalcony(),r.getRoomType());
                 roomDTO.setCostValidFrom(r.getCostValidFrom());
                 roomDTO.setCostValidUntil(r.getCostValidUntil());
+                roomDTO.setReservedFrom(r.getReservedFrom());
+                roomDTO.setReservedUntil(r.getReservedUntil());
 
                 ret.add(roomDTO);
-              // System.out.println("Nasao sobu!");
+             //  System.out.println("Nasao sobu!");
             }
         }
         System.out.println("Broj soba: "+ ret.size());
@@ -47,14 +52,18 @@ public class RoomController {
     @CrossOrigin(origins = "http://localhost:4200")
     public RoomDTO getRoom(@PathVariable Long roomId){
              Room r = this.roomService.findRoom(roomId);
-             if (r!=null){
+             if (r!=null && r.isActive() == true){
                  RoomDTO roomDTO = new RoomDTO(r.getId(),r.isReserved(),r.getCostPerNight(),r.getHotel().getId(),
                          r.getCapacity(),r.getFloor(),r.isHasBalcony(),r.getRoomType());
                  roomDTO.setCostValidFrom(r.getCostValidFrom());
                  roomDTO.setCostValidUntil(r.getCostValidUntil());
+                 roomDTO.setReservedFrom(r.getReservedFrom());
+                 roomDTO.setReservedUntil(r.getReservedUntil());
                  return roomDTO;
              }
         return  null;
     }
 }
+
+
 
