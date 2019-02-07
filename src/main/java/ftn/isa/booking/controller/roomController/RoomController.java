@@ -21,6 +21,8 @@ import ftn.isa.booking.model.Hotel;
 import ftn.isa.booking.model.HotelReservation;
 import ftn.isa.booking.model.Room;
 import ftn.isa.booking.model.RoomsOnDiscount;
+import ftn.isa.booking.reporistory.RoomsOnDiscountRepository;
+import ftn.isa.booking.services.HotelReservationService;
 import ftn.isa.booking.services.HotelService;
 import ftn.isa.booking.services.RoomService;
 
@@ -31,6 +33,10 @@ public class RoomController {
     private RoomService roomService;
     @Autowired
     private HotelService hotelService;
+    @Autowired
+    private RoomsOnDiscountRepository roomsOnDiscountRepository;
+    @Autowired
+    private HotelReservationService hotelReservationService;
 
     @RequestMapping(value = "/hotels/{hotelId}/rooms", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin(origins = "http://localhost:4200")
