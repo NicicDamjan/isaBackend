@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import ftn.isa.booking.dto.HotelServiceDTO;
 import ftn.isa.booking.dto.RoomDTO;
+import ftn.isa.booking.dto.RoomOnDiscountDTO;
+import ftn.isa.booking.model.FastHotelReservation;
 import ftn.isa.booking.model.Hotel;
 import ftn.isa.booking.model.HotelReservation;
 import ftn.isa.booking.model.Room;
@@ -25,6 +28,7 @@ import ftn.isa.booking.reporistory.RoomsOnDiscountRepository;
 import ftn.isa.booking.services.HotelReservationService;
 import ftn.isa.booking.services.HotelService;
 import ftn.isa.booking.services.RoomService;
+import ftn.isa.booking.services.RoomsOnDiscountService;
 
 @RestController
 @RequestMapping(value = "/api")
@@ -37,6 +41,9 @@ public class RoomController {
     private RoomsOnDiscountRepository roomsOnDiscountRepository;
     @Autowired
     private HotelReservationService hotelReservationService;
+    @Autowired
+    private RoomsOnDiscountService roomsOnDiscountService;
+ 
 
     @RequestMapping(value = "/hotels/{hotelId}/rooms", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin(origins = "http://localhost:4200")
@@ -184,10 +191,93 @@ public class RoomController {
         return ret;
     }
     
-    
-    
-    
+
+    @RequestMapping(value = "/rooms-on-discount/{hotelId}/from}/{until}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin(origins = "http://localhost:4200")
+    public List<RoomOnDiscountDTO> findFreeRoomsOnDiscount(@PathVariable Long hotelId, @PathVariable String from, @PathVariable String until){
+        List<RoomsOnDiscount> all = roomsOnDiscountRepository.findAll();
+        List<RoomOnDiscountDTO> ret = new ArrayList<>();
+        Hotel hotel = hotelService.findById(hotelId);
+
+        if(hotel == null)
+            return  null;
+        System.out.println(from + "     " + until);
+        String europeanDatePattern =  "dd-MM-yyyy";
+        DateTimeFormatter europeanDateFormatter = DateTimeFormatter.ofPattern(europeanDatePattern);
+        LocalDate d1 = LocalDate.parse(from, europeanDateFormatter);
+        LocalDate d2 = LocalDate.parse(until, europeanDateFormatter);
+
+        LocalDate date = LocalDate.now();
+        if(date.isAfter(d1) || date.isAfter(d2)){
+            System.out.println("Datum nije validan");
+            return null;
+        }
+
+        List<FastHotelReservation> fastHotelReservations = hotelReservationService.findFastReservationsForHotel(hotelId);
+        // lista zauzetih soba na popustu za trazeni period
+        Set<Room> occupiedRooms = new HashSet<>();
+
+        for (FastHotelReservation res: fastHotelReservations) {
+            // provjerim da li je rezervacija iz tabele u ovom periodu
+            if(res.getCheckOutDate().isAfter(d1) && res.getCheckOutDate().isBefore(d2) ||
+                    res.getCheckInDate().equals(d1) && res.getCheckOutDate().equals(d2) ||
+                    res.getCheckInDate().isAfter(d1) && res.getCheckInDate().isBefore(d2) ||
+                    res.getCheckOutDate().isAfter(d1) && res.getCheckOutDate().isBefore(d2) ||
+                    res.getCheckInDate().equals(d1) || res.getCheckOutDate().equals(d2) ||
+                    res.getCheckInDate().equals(d2) || res.getCheckOutDate().equals(d1)
+            ){
+                        occupiedRooms.add(res.getRoom());
+
+            }
+        }
+
+        if(occupiedRooms.size() == 0){
+            for (RoomsOnDiscount rond: all) {
+                Room room = rond.getRoom();
+                // ako je soba na popustu u periodu koji je korisinik uneo
+                if(
+                        (d1.isAfter(rond.getCostValidFrom()) || d1.equals(rond.getCostValidFrom())) &&
+                                (d2.isBefore(rond.getCostValidUntil()) || d2.equals(rond.getCostValidUntil()))
+                ){
+
+                    RoomOnDiscountDTO roomDTO = new RoomOnDiscountDTO(room.getId(), false, room.getCostPerNight(), room.getHotel().getId(),
+                            room.getCapacity(), room.getFloor(), room.isHasBalcony(), room.getRoomType(), rond.getCostValidFrom(),rond.getCostValidUntil(), rond.getOriginalCost());
+
+                    if(room.isActive() == true)
+                        ret.add(roomDTO);
+                }
+            }
+            return  ret;
+        }
+        // ako ima u bazi slobodnih soba koje su na popustu ali rezervisane
+        for (RoomsOnDiscount rond: all) {
+            Room room = rond.getRoom();
+            for (Room room1: occupiedRooms) {
+                if( (long)room.getId() != (long)room1.getId()  && room.isActive() == true){
+
+
+                    System.out.println("Nasao sobu slobodnu za brzu rezervaciju");
+                    if(  (d2.isBefore(rond.getCostValidUntil()) ||
+                            d2.equals(rond.getCostValidUntil())) &&
+                            (d1.isAfter(rond.getCostValidFrom()) ||
+                                    d1.equals(rond.getCostValidFrom()))){
+
+                        RoomOnDiscountDTO roomDTO = new RoomOnDiscountDTO(room.getId(), false, room.getCostPerNight(), room.getHotel().getId(),
+                                room.getCapacity(), room.getFloor(), room.isHasBalcony(), room.getRoomType(), rond.getCostValidFrom(),rond.getCostValidUntil(), rond.getOriginalCost());
+
+                        ret.add(roomDTO);
+
+                    }
+                }
+            }
+        }
+
+        return ret;
+    }
+
+    @RequestMapping(value = "/rooms-on-discount/{roomId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin(origins = "http://localhost:4200")
+    public List<HotelServiceDTO> getExtraServicesOnDiscount(@PathVariable Long roomId){
+        return roomsOnDiscountService.findExtraServicesOfReservation(roomId);
+    }
 }
-
-
-
