@@ -18,6 +18,7 @@ public interface DestinationRepository extends JpaRepository<Destination, Long> 
 	
 	Destination findByName(String name);
 
+	Destination findByState(String state);
 
 
 }
