@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import ftn.isa.booking.controller.airCompanyController.dto.FlightReservationDTO;
+import ftn.isa.booking.controller.airCompanyController.dto.SearchFlightParamDTO;
 import ftn.isa.booking.model.Flight;
 import ftn.isa.booking.model.FlightReservation;
 import ftn.isa.booking.model.Seat;
@@ -82,11 +84,38 @@ public class FlightController {
 		
 	}
 	
-
+	@RequestMapping(value = "/airlines/{id}/flights/{id}/getSeats", method = RequestMethod.GET)
+	public ArrayList<Seat> getSeats(@PathVariable Long id) {
+		
+		return flightService.findAllSeats(id);
+		
+		
+	}
 	
+	@RequestMapping(value = "/flights/{id}/addSeats", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public void addSeats(@PathVariable Long id, @RequestBody Integer numberOfSeats) {
+		
+		flightService.addSeats(id, numberOfSeats);
+		
+		
+	}
 	
+	@RequestMapping(value="/airlines/getFlightsByParams", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ArrayList<Flight> gettFlightsByParams(@RequestBody SearchFlightParamDTO sfp) throws ParseException{
+		
+		return flightService.searchFlightsByParam(sfp);
+		
+	}
 	
-	
+	@RequestMapping(value="/reserveFlight", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public Long reserveFlight(@RequestBody FlightReservationDTO fd) {
+		
+		return flightReservationService.reserveFlight(fd).getId();
+		
+	}
 	@RequestMapping(value="/flight-reservations/{id}/cost", method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public double getFlightReservationCost(@PathVariable Long id){
@@ -96,4 +125,3 @@ public class FlightController {
 
 	
 }
-
