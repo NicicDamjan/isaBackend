@@ -11,7 +11,7 @@ import ftn.isa.booking.model.RoomsOnDiscount;
 import ftn.isa.booking.reporistory.RoomsOnDiscountRepository;
 
 @Service
-public class RoomOnDiscountService {
+public class RoomsOnDiscountService {
 
 private RoomsOnDiscountRepository roomsOnDiscountRepository;
 public List<RoomsOnDiscount> findAll(){
