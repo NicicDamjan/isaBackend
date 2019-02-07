@@ -56,6 +56,10 @@ public class UserService {
         return usersRepository.findOneByConfirmationToken(token);
     }
     
+   /* public  User findByUsername(String username) {
+        return usersRepository.findByUsername(username);
+    } */
+    
     public void saveUser(User user) {
     	usersRepository.save(user);
     }

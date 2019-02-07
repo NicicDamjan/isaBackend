@@ -9,7 +9,6 @@ import ftn.isa.booking.model.Seat;
 import ftn.isa.booking.reporistory.SeatRepository;
 
 
-
 @Service
 public class SeatService {
 
@@ -30,4 +29,18 @@ public class SeatService {
 		
 		return s.get();
 	}
+
+	public Seat changeTypeSeat(Long seatId) {
+		
+		
+		Seat s = seatRepository.findById(seatId).get();
+		
+		s.setReserved(true);
+		
+		seatRepository.save(s);
+		
+		return s;
+		
+	}
 }
+
