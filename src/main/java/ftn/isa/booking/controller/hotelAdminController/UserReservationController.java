@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import ftn.isa.booking.dto.FastHotelReservationDTO;
 import ftn.isa.booking.dto.HotelReservationDTO;
 import ftn.isa.booking.model.FastHotelReservation;
 import ftn.isa.booking.model.Hotel;
@@ -83,7 +84,7 @@ public class UserReservationController {
         hotelReservationService.createReservation(hotelReservation);
         }
 
-       /* @RequestMapping(value = "/hotel-fast-reservations/new", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+        @RequestMapping(value = "/hotel-fast-reservations/new", method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
         @Transactional
         @CrossOrigin(origins = "http://localhost:4200")
         public void makeFastReservation(@RequestBody FastHotelReservationDTO reservationDTO){
@@ -92,20 +93,25 @@ public class UserReservationController {
             reservation.setCheckOutDate(reservationDTO.getCheckOutDate());
             reservation.setNumberOfNights(reservationDTO.getNumberOfNights());
             reservation.setTotal(reservationDTO.getTotal());
+            System.out.println("Pre Room room");
             Room room = roomService.findRoom(reservationDTO.getRoom());
+            System.out.println("psle find room");
             reservation.setRoom(room);
+            System.out.println("set rooms");
             Set<HotelServices> extraServices = new HashSet<>();
-            for (Long i: reservationDTO.getExtraServices() ) {
+            System.out.println("posel extraService");
+           /* for (Long i: reservationDTO.getExtraServices() ) {
                 HotelServices hs = hotelService.getHotelService(i);
                 if(hs!= null){
                     extraServices.add(hs);
                 }
-            }
-            reservation.setUser(userService.findByUsername(reservationDTO.getUsername()));
+            }*/
+            System.out.println("posel FOR");
+            reservation.setUser(userService.activeUser);
             reservation.setExtraServices(extraServices);
-
+            System.out.println("pre createREserv");
             hotelReservationService.createFastReservation(reservation);
-        }*/
+        }
     
         @RequestMapping(value = "/updateUser", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE,
                 produces = MediaType.APPLICATION_JSON_VALUE)

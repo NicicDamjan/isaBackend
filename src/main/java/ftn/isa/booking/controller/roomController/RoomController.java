@@ -192,7 +192,7 @@ public class RoomController {
     }
     
 
-    @RequestMapping(value = "/rooms-on-discount/{hotelId}/from}/{until}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/rooms-on-discount/{hotelId}/{from}/{until}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin(origins = "http://localhost:4200")
     public List<RoomOnDiscountDTO> findFreeRoomsOnDiscount(@PathVariable Long hotelId, @PathVariable String from, @PathVariable String until){
         List<RoomsOnDiscount> all = roomsOnDiscountRepository.findAll();
