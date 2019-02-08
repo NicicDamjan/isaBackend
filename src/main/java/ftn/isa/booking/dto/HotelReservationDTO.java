@@ -7,19 +7,19 @@ public class HotelReservationDTO {
     private Long id;
     private Long hotelId;
     private Set<Long> rooms;
-    private Long userId;
+    private String username;
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
     private short numberOfNights;
     private float total;
     private Set<Long> extraServices;
 
-    public HotelReservationDTO(Long id, Long hotelId, Set<Long> rooms, Long userId, LocalDate checkInDate,
+    public HotelReservationDTO(Long id, Long hotelId, Set<Long> rooms, String username, LocalDate checkInDate,
                                LocalDate checkOutDate, short numberOfNights, float total, Set<Long> extraServices) {
         this.id = id;
         this.hotelId = hotelId;
         this.rooms = rooms;
-        this.userId = userId;
+        this.username = username;
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
         this.numberOfNights = numberOfNights;
@@ -51,12 +51,12 @@ public class HotelReservationDTO {
         this.rooms = rooms;
     }
 
-    public Long getUserId() {
-        return userId;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUsername(String userId) {
+        this.username = userId;
     }
 
     public LocalDate getCheckInDate() {

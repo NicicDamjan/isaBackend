@@ -101,6 +101,40 @@ public class UserController {
 	    	return new MessageResponseDTO("User is registrated");
 	    }
 	    
+	    @PostMapping("/addSysAdmin")
+	    public MessageResponseDTO addSysAdmin(@RequestBody RegistrationDTO registrationDTO) {
+	    	
+	    	User user = new User();
+	    	  
+	    	user = userService.getOneByEmail(registrationDTO.getEmail());
+	    	user.setRole("ADMIN");
+	    	
+	    	userService.saveUser(user);
+	    	
+	  
+	    	
+	    	return new MessageResponseDTO("User is ADMIN now.");
+	    }
+	    
+	    @PostMapping("/returnUserRole")
+	    public MessageResponseDTO returnUserRole(@RequestBody RegistrationDTO registrationDTO) {
+	    	
+	    	
+	    	User user = new User();
+	        user = userService.getOneByEmail(userService.activeUser.getEmail());
+	       
+	        if(!(registrationDTO.getPassword1().equals(registrationDTO.getPassword2()))) {
+		    	   return new MessageResponseDTO("Password1 and password2 is not equal!");
+		    	}
+	        
+	        user.setPassword(registrationDTO.getPassword1());
+	        user.setRole("USER");
+	        
+	        userService.saveUser(user);
+	        
+	    	   return new MessageResponseDTO("Uspesno promenjena sifra admina!");
+	    }
+	    
 	    @PostMapping("/confirmEmail")
 	    public MessageResponseDTO confirmEmail(@RequestParam("token") String token) {
 	    	System.out.println("Usaoo");
