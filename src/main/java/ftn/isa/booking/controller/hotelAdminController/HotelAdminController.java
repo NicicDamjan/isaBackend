@@ -18,10 +18,12 @@ import ftn.isa.booking.dto.HotelDTO;
 import ftn.isa.booking.dto.HotelRatingDTO;
 import ftn.isa.booking.dto.HotelServiceDTO;
 import ftn.isa.booking.dto.RoomDTO;
+import ftn.isa.booking.model.FlightReservation;
 import ftn.isa.booking.model.Hotel;
 import ftn.isa.booking.model.HotelRating;
 import ftn.isa.booking.model.HotelServices;
 import ftn.isa.booking.model.Room;
+import ftn.isa.booking.services.FlightReservationService;
 import ftn.isa.booking.services.HotelService;
 import ftn.isa.booking.services.RoomService;
 import io.swagger.annotations.ApiOperation;
@@ -38,6 +40,9 @@ public class HotelAdminController {
 
     @Autowired
     private HotelService hotelService;
+    
+    @Autowired
+    private FlightReservationService flightReservationService;
 
 
     @RequestMapping(value = "/hotels", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -56,6 +61,27 @@ public class HotelAdminController {
         }
 
         return ret;
+    }
+    
+    @RequestMapping(value = "/hotels-in/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiResponses(value = { @ApiResponse(code = 201, message = "Created"),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 500, message = "Failure") })
+    @CrossOrigin(origins = "http://localhost:4200")
+    public List<HotelDTO> getAllHotelsByDestination(@PathVariable("id") Long id) {
+        FlightReservation flightReservation =flightReservationService.findById(id);
+        String city = flightReservation.getFlight().getToDest().getCity();
+        List<HotelDTO> ret = new ArrayList<>();
+
+        List<Hotel> allHotels = hotelService.findAllHotels();
+        for (Hotel h: allHotels) {
+            if(h.getCity().equals(city)){
+                HotelDTO hotelDTO= new HotelDTO(h.getId(), h.getAddress(), h.getCity(), h.getCountry(), h.getAvgRating());
+                ret.add(hotelDTO);
+            }
+        }
+        return ret;
+
     }
 
     @RequestMapping(value = "/hotels/{hotelId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

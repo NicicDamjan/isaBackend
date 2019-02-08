@@ -1,0 +1,3 @@
+INSERT INTO `isa_2018`.`users` (`id`, `email`, `active`, `city` , `confirmation_token` , `name` , `password` , `phonenumber` , `role`, `surname`  ) VALUES ('1', 'damjan@', '1' , 'NS' , '1', 'Damjan' , '123' , '060567' , 'USER' , 'Nicic');
+INSERT INTO `isa_2018`.`users` (`id`, `email`, `active`, `city` , `confirmation_token` , `name` , `password` , `phonenumber` , `role`, `surname`  ) VALUES ('2', 'stam@', '1' , 'NS' , '2', 'Stefan' , '123' , '060117' , 'USER' , 'Stamenkovic');
+INSERT INTO `isa_2018`.`users` (`id`, `email`, `active`, `city` , `confirmation_token` , `name` , `password` , `phonenumber` , `role`, `surname`  ) VALUES ('3', 'pera@', '1' , 'BG' , '3', 'Pera' , '123' , '060337' , 'USER' , 'Peric');
